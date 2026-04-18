@@ -1,0 +1,18 @@
+@startuml
+start
+- Load puzzle
+repeat
+repeat
+- Player submits turn
+repeat while () is (code \n contains \n  errors)
+- Player's turn is simulated
+if () then (killed all enemies)
+- Player wins
+stop
+else
+- Enemy turns are calculated
+endif
+repeat while () not (                player died)
+- Player loses
+stop
+@enduml

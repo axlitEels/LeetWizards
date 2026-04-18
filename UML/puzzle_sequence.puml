@@ -1,0 +1,35 @@
+@startuml
+actor User
+participant UI
+participant Puzzle
+participant AI
+loop until puzzle ends
+    opt
+      User -> UI : Get help
+     activate UI
+       return Display help
+     end
+    opt
+     User -> UI : Inspect
+      activate UI
+      UI -> Puzzle : get_tile_details()
+      activate Puzzle
+      return
+      return Show details
+    end
+    User -> UI : Submit turn
+    activate UI
+    note right UI : Deny on \n bad syntax
+    UI -> Puzzle : submit_code()
+    activate Puzzle
+    Puzzle -> Puzzle : exec_spells()
+   loop over all enemies
+        Puzzle -> AI : get_solution()
+        activate AI
+        return
+        Puzzle -> Puzzle : exec_spells()
+    end
+    return sim_done()
+    return Return controls
+end
+@enduml

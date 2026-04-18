@@ -1,0 +1,18 @@
+@startuml
+start
+repeat :Find all spells that could hit player;
+if () then (there are some)
+:Calculate N = minimal no of turns to hit player
+(build spell tree towards all damage-dealing
+spells and find shortest branch);
+:Maximize damage in the number of turns calculated
+(continue spell tree, stopping at branch depth of N*SP);
+stop
+else (none)
+:Approach player
+(take one step on
+the shortest path);
+endif
+repeat while () is (has more actions) not (out of actions)
+stop
+@enduml
