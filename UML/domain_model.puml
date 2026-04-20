@@ -1,0 +1,78 @@
+@startuml
+
+class Game {
+    - puzzle : optional<Puzzle>
+    - progress : map<LevelID, bool>
+    + draw()
+}
+Puzzle <- Game
+
+struct Cell {
+    + entity : Entity*
+    + passable : bool
+    + has_flowers : bool
+}
+Cell <- CellData
+
+class CellData {
+    - data : vector<Cell>
+    - map_width : int
+}
+CellData <-- Puzzle
+class Puzzle {
+    - cell_data : CellData
+    - enemies : vector<Enemy*>
+    - player : Player*
+    - sim_lock : bool
+    - cmd_queue : queue<pair<Entity*, Command>>
+    + getTileDetails()
+    + getPlayerStatus()
+    + getSimulationStatus()
+    + processPlayerCommands(vector<Command>)
+    + advance()
+    + drawCells()
+}
+
+enum CommandType {
+    kArrow
+    kFireball
+    ...
+}
+
+enum Parameter {
+    AX
+    BX
+    AH
+    ...
+}
+
+struct Command {
+    type : CommandType
+    param_a : Parameter
+    param_b : Parameter
+}
+CommandType -- Command
+Parameter -- Command
+
+abstract class Entity {
+    - ax : char
+    - bx : char
+    - hx : char
+    - available_spells : vector<CommandType>
+    + getHp()
+    + getAvailableSpells()
+    + receiveDmg()
+    + exec(Command cmd)
+}
+Entity o- Cell
+
+class Player
+Entity <|-- Player
+
+class Enemy {
+    - hp : int
+    + vector<Command> evaluateAI(data : CellData)
+}
+Entity <|-- Enemy
+
+@enduml
