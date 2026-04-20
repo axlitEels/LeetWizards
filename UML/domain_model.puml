@@ -1,8 +1,48 @@
 @startuml
+struct GameConfig {
+    + game_speed : float
+    ...
+}
+GameConfig <-- Game
+
+enum GameState {
+    kMenu
+    kMap
+    kStory
+    kPuzzle
+}
+GameState -- Game
+
+struct StorySlide {
+    + stop : bool
+    + text : string
+    + picture : string
+}
+note top
+Picture is separate from text
+because picture is centered in terminal
+while text doesn't contain line breaks
+and is wrapped
+end note
+
+class StoryReader {
+    - vector<StorySlide> slides
+    + loadStory(path)
+    + advance() : bool
+    + draw()
+}
 
 class Game {
     - puzzle : optional<Puzzle>
+    - reader : StoryReader
     - progress : map<LevelID, bool>
+    - selected_puzzle : LevelID
+    - config : GameConfig
+    - state : GameState
+    - code : String
+    - unlocked_spells : vector<CommandType>
+    - hx_factor: int
+    + processInputEvents()
     + draw()
 }
 Puzzle <- Game
@@ -40,16 +80,16 @@ enum CommandType {
 }
 
 enum Parameter {
-    AX
-    BX
-    AH
+    kAX
+    kBX
+    kAH
     ...
 }
 
 struct Command {
-    type : CommandType
-    param_a : Parameter
-    param_b : Parameter
+    + type : CommandType
+    + param_a : Parameter
+    + param_b : Parameter
 }
 CommandType -- Command
 Parameter -- Command
@@ -67,12 +107,22 @@ abstract class Entity {
 Entity o- Cell
 
 class Player
+note top
+Has no additional
+symbols. Differs from
+Enemy in abstract
+method implementations
+end note
 Entity <|-- Player
+
 
 class Enemy {
     - hp : int
-    + vector<Command> evaluateAI(data : CellData)
+    + evaluateAI(data : CellData) : vector<Command>
 }
 Entity <|-- Enemy
+
+Game -> StoryReader
+StoryReader -> StorySlide
 
 @enduml
