@@ -1,0 +1,22 @@
+title: Repercussions of Evil
+action_points: 4
+enemies:
+- letter: B
+  name: Wizard
+  spells:
+  - arr
+  - step
+map_width: 12
+map: |
+    WWWWWWEWWWWW
+    WWWWWW WWWWW
+    WWWWWW WWWWW
+    WWWWWWFWWWWW
+    WWWWWW WWWWW
+    WWWWWWBWWWWW
+    WWWWWW WWWWW
+    WWWWW P WWWW
+    WWWWWWWWWWWW
+    WWWWWWWWWWWW
+    WWWWWWWWWWWW
+    WWWWWWWWWWWW
